@@ -1,0 +1,18 @@
+on:
+  pull_request:
+  push:
+    branches: [main, test-me-*]
+
+jobs:
+  self-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ./
+      with:
+        requirement-files: |
+          requirement-a.txt
+          requirement-b.txt
+        constrain-files: |
+          constraint-a.txt
+          constraint-b.txt
