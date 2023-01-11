@@ -25,6 +25,10 @@ runs:
         --python-version ${{ inputs.python-version }} \
         --requirement-files-hash ${{ hashFiles(inputs.requirement-files) }}
 
+    - name: TEst
+      shell: bash
+      run: echo "${{ steps.venv.output.venv-dir }} + ${{ steps.venv.output.cache-key }}"
+
     - name: Cache venv
       id: cache-venv
       uses: actions/cache@v3
