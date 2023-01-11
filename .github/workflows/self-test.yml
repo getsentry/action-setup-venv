@@ -15,6 +15,3 @@ jobs:
         requirement-files: |
           requirement-a.txt
           requirement-b.txt
-        constraint-files: |
-          constraint-a.txt
-          constraint-b.txt
