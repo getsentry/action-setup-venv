@@ -24,14 +24,6 @@ runs:
         python-version: ${{ inputs.python-version }}
         cache: 'pip'
 
-    #- name: Setup action variables
-    #  id: venv-vars
-    #  shell: bash
-    #  run: |
-    #    python3 -uS ${{ github.action_path }}/bin/setup-venv vars \
-    #    --python-version ${{ inputs.python-version }} \
-    #    --requirement-files-hash ${{ hashFiles(inputs.requirement-files) }}
-
     - uses: actions/cache@v3
       id: cache-venv
       with:
