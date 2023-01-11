@@ -27,19 +27,19 @@ runs:
 
     - name: TEst
       shell: bash
-      run: echo "${{ steps.venv.output.venv-dir }} + ${{ steps.venv.output.cache-key }}"
+      run: echo "${{ steps.venv.outputs.venv-dir }} + ${{ steps.venv.outputs.cache-key }}"
 
     - name: Cache venv
       id: cache-venv
       uses: actions/cache@v3
       with:
-        path: ${{ steps.venv.output.venv-dir }}
-        key: ${{ steps.venv.output.cache-key }}
+        path: ${{ steps.venv.outputs.venv-dir }}
+        key: ${{ steps.venv.outputs.cache-key }}
 
     - name: Create venv
       if: steps.cache-venv.outputs.cache-hit != 'true'
       shell: bash
-      run: python3 -m venv ${{ steps.venv.output.venv-dir }} && source ${{ steps.venv.output.venv-dir }}/bin/activate
+      run: python3 -m venv ${{ steps.venv.outputs.venv-dir }} && source ${{ steps.venv.outputs.venv-dir }}/bin/activate
 
     - name: Pip install
       shell: bash
