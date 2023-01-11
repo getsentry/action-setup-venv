@@ -6,7 +6,7 @@ inputs:
     description: "Version range or exact version of Python or PyPy to use, using SemVer's version range syntax."
     default: 3.8.13
   requirement-files:
-    description: "Requirement files to install"
+    description: "Requirement files to install. Can be a glob pattern."
     required: true
 
 runs:
@@ -17,7 +17,7 @@ runs:
       with:
         python-version: ${{ inputs.python-version }}
 
-    - run: echo "${{ inputs.requirement-files }}"
+    - run: echo "${{ hashFiles(inputs.requirement-files) }}"
       shell: bash
 
     - name: Make venv

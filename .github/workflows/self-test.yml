@@ -13,6 +13,4 @@ jobs:
     - name: Run local action
       uses: ./
       with:
-        requirement-files: |
-          requirement-a.txt
-          requirement-b.txt
+        requirement-files: requirements.txt
