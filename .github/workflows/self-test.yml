@@ -16,4 +16,6 @@ jobs:
         python-version: 3.8.13
         requirement-files: test/testdata/requirements.txt
     - name: Ensure environment works
-      run: python3 ./test/testdata/demo.py
+      run: |
+        echo "${VIRTUAL_ENV}"
+        python3 ./test/testdata/demo.py
