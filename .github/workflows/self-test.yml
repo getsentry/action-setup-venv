@@ -18,4 +18,5 @@ jobs:
     - name: Ensure environment works
       run: |
         echo "VIRTUAL_ENV: ${VIRTUAL_ENV}"
+        ls -la ${VIRTUAL_ENV}/lib/*/site-packages/
         python3 ./test/testdata/demo.py
