@@ -29,7 +29,7 @@ def main() -> int:
   parser.add_argument("--requirement-files-hash", required=True)
   args = parser.parse_args()
 
-  cache_key = f"{sys.platform}-py-{args.python_version}-{args.requirement_files_hash}"
+  cache_key = f"setup-venv-{sys.platform}-py-{args.python_version}-{args.requirement_files_hash}"
 
   return {
       "vars": _command_vars,
