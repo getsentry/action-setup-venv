@@ -40,8 +40,5 @@ runs:
         echo "VIRTUAL_ENV=${VIRTUAL_ENV}" >> $GITHUB_ENV
       shell: bash
 
-    - run: pip install -r ${{ inputs.requirement-files }}
-      if: steps.cache-venv.outputs.cache-hit != 'true'
+     - run: echo "cache-hit=${{ steps.cache-venv.outputs.cache-hit }}" >> $GITHUB_OUTPUT
       shell: bash
-
-    # - name: Cache venv

@@ -11,12 +11,17 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Test action-setup-venv
+      id: venv
       uses: ./
       with:
         python-version: 3.8.13
         requirement-files: test/testdata/requirements.txt
+    - run: pip install -r ${{ inputs.requirement-files }}
+      if: steps.venv.outputs.cache-hit != 'true'
+      shell: bash
     - name: Ensure environment works
       run: |
         echo "VIRTUAL_ENV: ${VIRTUAL_ENV}"
+        echo "Cache Hit: ${{ steps.venv.outputs.cache-hit }}"
         ls -la ${VIRTUAL_ENV}/lib/*/site-packages/
         python3 ./test/testdata/demo.py
