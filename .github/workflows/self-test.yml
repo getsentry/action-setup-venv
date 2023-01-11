@@ -13,9 +13,6 @@ jobs:
     - name: Test action-setup-venv
       id: venv
       uses: ./
-      with:
-        python-version: 3.8.13
-        requirement-files: test/testdata/requirements.txt
     - name: Print variables for debugging
       run: |
         echo "VIRTUAL_ENV: ${VIRTUAL_ENV}"

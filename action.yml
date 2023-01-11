@@ -4,10 +4,9 @@ description: 'configures venv, python and caches'
 inputs:
   python-version:
     description: "Version range or exact version of Python or PyPy to use, using SemVer's version range syntax."
-    required: true
   requirement-files:
     description: "Requirement files to install. Can be a glob pattern."
-    required: true
+    default: '**/requirements*.txt'
 
 outputs:
   cache-hit:
