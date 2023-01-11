@@ -21,11 +21,9 @@ runs:
       id: venv
       shell: bash
       run: |
-        echo "::group::Setup action variables"
         python3 -uS ${{ github.action_path }}/bin/setup-venv vars \
         --python-version ${{ inputs.python-version }} \
         --requirement-files-hash ${{ hashFiles(inputs.requirement-files) }}
-        echo "::endgroup::"
 
     - name: Cache venv
       id: cache-venv
@@ -38,15 +36,12 @@ runs:
       if: steps.cache-venv.outputs.cache-hit != 'true'
       shell: bash
       run: |
-        echo "::group::Creating virtual environment"
         python3 -m venv ${{ steps.venv.outputs.venv-dir }} && source ${{ steps.venv.outputs.venv-dir }}/bin/activate
-        echo "::endgroup::"
 
     - name: Pip install
+      if: steps.cache-venv.outputs.cache-hit != 'true'
       shell: bash
       run: |
-        echo "::group::Running pip install"
         pip install -r ${{ inputs.requirement-files }}
-        echo "::endgroup::"
 
     # - name: Cache venv
