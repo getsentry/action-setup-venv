@@ -28,6 +28,8 @@ runs:
         --python-version ${{ inputs.python-version }} \
         --requirement-files-hash ${{ hashFiles(inputs.requirement-files) }}
 
-    # - name: Pip install
+    - name: Pip install
+      shell: bash
+      run: pip install -r ${{ inputs.requirement-files }}
 
     # - name: Cache venv
