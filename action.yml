@@ -23,7 +23,7 @@ runs:
       run: |
         python3 -uS ${{ github.action_path }}/bin/setup-venv \
         --python-version ${{ inputs.python-version }}
-        --requirement-files ${{ inputs.requirement-files }}
+        --requirement-files-hash ${{ hashFiles(inputs.requirement-files) }}
 
     # - name: Pip install
 

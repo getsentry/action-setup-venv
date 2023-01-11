@@ -19,13 +19,10 @@ def req_files_key():
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--python-version", required=True)
-    parser.add_argument("--requirement-files", nargs='+')
-    parser.add_argument("--constraint-files", nargs='*')
+    parser.add_argument("--requirement-files-hash", required=True)
     args = parser.parse_args()
 
-    print(f"args: {args.required_files} ${args.constraint_files}")
-
-    cache_key = f"{sys.platform}-py-{args.python_version}-{req_files_key()}"
+    cache_key = f"{sys.platform}-py-{args.python_version}-{args.equirement_files_hash}"
 
     with open(os.environ["GITHUB_OUTPUT"], "a+") as f:
         print(f"cache-key={cache_key}", file=f)
