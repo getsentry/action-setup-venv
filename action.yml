@@ -35,8 +35,11 @@ runs:
     - name: Create venv
       if: steps.cache-venv.outputs.cache-hit != 'true'
       shell: bash
-      run: |
-        python3 -m venv ${{ steps.venv.outputs.venv-dir }} && source ${{ steps.venv.outputs.venv-dir }}/bin/activate
+      run: python3 -m venv ${{ steps.venv.outputs.venv-dir }}
+
+    - name: Source venv
+      shell: bash
+      run: source ${{ steps.venv.outputs.venv-dir }}/bin/activate
 
     - name: Pip install
       if: steps.cache-venv.outputs.cache-hit != 'true'
