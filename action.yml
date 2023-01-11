@@ -29,7 +29,7 @@ runs:
       id: cache-venv
       with:
         path: ${{ inputs.venv-dir }}
-        key: setup-venv-${{ runner.os }}-py-${{ steps.setup-python.outputs.python-path }}-${{ hashFiles(inputs.cache-dependency-path) }}
+        key: setup-venv-${{ runner.os }}-py-${{ steps.setup-python.outputs.python-version }}-${{ steps.setup-python.outputs.python-path }}-${{ hashFiles(inputs.cache-dependency-path) }}
 
     - run: python3 -m venv ${{ inputs.venv-dir }}
       if: steps.cache-venv.outputs.cache-hit != 'true'
