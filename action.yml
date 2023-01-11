@@ -4,7 +4,7 @@ description: 'configures venv, python and caches'
 inputs:
   python-version:
     description: "Version range or exact version of Python or PyPy to use, using SemVer's version range syntax."
-  requirement-files:
+  cache-dependency-path:
     description: "Requirement files to install. Can be a glob pattern."
     default: '**/requirements*.txt'
   venv-dir:
@@ -23,12 +23,13 @@ runs:
       with:
         python-version: ${{ inputs.python-version }}
         cache: 'pip'
+        cache-dependency-path: ${{ inputs.cache-dependency-path }}
 
     - uses: actions/cache@v3
       id: cache-venv
       with:
         path: ${{ inputs.venv-dir }}
-        key: setup-venv-${{ runner.os }}-py-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles(inputs.requirement-files) }}
+        key: setup-venv-${{ runner.os }}-py-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles(inputs.cache-dependency-path) }}
 
     - run: python3 -m venv ${{ inputs.venv-dir }}
       if: steps.cache-venv.outputs.cache-hit != 'true'

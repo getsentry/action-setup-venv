@@ -10,6 +10,9 @@ Sets up python and a virtual environment with caching.
       id: venv
       with:
         python-version: 3.10.7
+        cache-dependency-path: |
+          requirements.txt
+          requirements-frozen.txt
     - run: pip install -r requirements.txt
       if: steps.venv.outputs.cache-hit != 'true'
 ```
