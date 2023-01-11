@@ -1,11 +1,14 @@
 name: 'venv setup'
 description: 'configures venv, python and caches'
-python-version:
-  description: "Version range or exact version of Python or PyPy to use, using SemVer's version range syntax."
-  default: 3.8.13
-requirement-files:
-  description: "Requirement files to install"
-  required: true
+
+inputs:
+  python-version:
+    description: "Version range or exact version of Python or PyPy to use, using SemVer's version range syntax."
+    default: 3.8.13
+  requirement-files:
+    description: "Requirement files to install"
+    required: true
+
 runs:
   using: 'composite'
   steps:
