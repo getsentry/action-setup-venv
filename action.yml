@@ -17,6 +17,8 @@ runs:
       with:
         python-version: ${{ inputs.python-version }}
 
+    - run: echo "${{ hashFiles(inputs.requirement-files) }}"
+
     - name: Make venv
       id: venv
       shell: bash
