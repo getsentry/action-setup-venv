@@ -40,5 +40,5 @@ runs:
         echo "VIRTUAL_ENV=${VIRTUAL_ENV}" >> $GITHUB_ENV
       shell: bash
 
-     - run: echo "cache-hit=${{ steps.cache-venv.outputs.cache-hit }}" >> $GITHUB_OUTPUT
+    - run: echo "cache-hit=${{ steps.cache-venv.outputs.cache-hit }}" >> $GITHUB_OUTPUT
       shell: bash
