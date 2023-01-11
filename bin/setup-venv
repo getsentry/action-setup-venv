@@ -13,28 +13,25 @@ from typing import List
 VENV_DIR=os.path.abspath(".venv")
 VENV_BIN_DIR=os.path.join(VENV_DIR, "bin")
 
-def req_files_key():
-	return "TODO"
+def _command_vars(cache_key: str) -> int:
+  with open(os.environ["GITHUB_OUTPUT"], "a+") as f:
+    print(f"cache-key={cache_key}", file=f)
+    print(f"venv-dir={VENV_DIR}", file=f)
+
+  return 0
 
 def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--python-version", required=True)
-    parser.add_argument("--requirement-files-hash", required=True)
-    args = parser.parse_args()
+  parser = argparse.ArgumentParser()
+  parser.add_argument("command", choices=("vars", "install", "yarn-cache-dir"))
+  parser.add_argument("--python-version", required=True)
+  parser.add_argument("--requirement-files-hash", required=True)
+  args = parser.parse_args()
 
-    cache_key = f"{sys.platform}-py-{args.python_version}-{args.requirement_files_hash}"
+  cache_key = f"{sys.platform}-py-{args.python_version}-{args.requirement_files_hash}"
 
-    with open(os.environ["GITHUB_OUTPUT"], "a+") as f:
-        print(f"cache-key={cache_key}", file=f)
-        print(f"venv-dir={VENV_DIR}", file=f)
-
-    print(f"adding {VENV_BIN_DIR} to path")
-    with open(os.environ["GITHUB_PATH"], "a+") as f:
-        f.write(f"{VENV_BIN_DIR}\n")
-
-    print(f"adding VIRTUAL_ENV={VENV_DIR} to env")
-    with open(os.environ["GITHUB_ENV"], "a+") as f:
-        f.write(f"VIRTUAL_ENV={VENV_DIR}\n")
+  return {
+      "vars": _command_vars,
+  }[args.command](cache_key)
 
 
 if __name__ == "__main__":

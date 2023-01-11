@@ -17,16 +17,25 @@ runs:
       with:
         python-version: ${{ inputs.python-version }}
 
-    - run: echo "${{ inputs.requirement-files }} -> ${{ hashFiles(inputs.requirement-files) }}"
-      shell: bash
-
     - name: Make venv
       id: venv
       shell: bash
       run: |
-        python3 -uS ${{ github.action_path }}/bin/setup-venv \
+        python3 -uS ${{ github.action_path }}/bin/setup-venv vars \
         --python-version ${{ inputs.python-version }} \
         --requirement-files-hash ${{ hashFiles(inputs.requirement-files) }}
+
+    - name: Cache venv
+      id: cache-venv
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.venv.output.venv-dir }}
+        key: ${{ steps.venv.output.cache-key }}
+
+    - name: Create venv
+      if: steps.cache-venv.outputs.cache-hit != 'true'
+      shell: bash
+      run: python3 -m venv ${{ steps.venv.output.venv-dir }} && source ${{ steps.venv.output.venv-dir }}/bin/activate
 
     - name: Pip install
       shell: bash
