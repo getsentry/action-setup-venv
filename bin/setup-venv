@@ -22,7 +22,7 @@ def main() -> int:
     parser.add_argument("--requirement-files-hash", required=True)
     args = parser.parse_args()
 
-    cache_key = f"{sys.platform}-py-{args.python_version}-{args.equirement_files_hash}"
+    cache_key = f"{sys.platform}-py-{args.python_version}-{args.requirement_files_hash}"
 
     with open(os.environ["GITHUB_OUTPUT"], "a+") as f:
         print(f"cache-key={cache_key}", file=f)
