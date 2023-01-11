@@ -16,7 +16,7 @@ jobs:
       with:
         python-version: 3.8.13
         requirement-files: test/testdata/requirements.txt
-    - run: pip install -r ${{ inputs.requirement-files }}
+    - run: pip install -r test/testdata/requirements.txt
       if: steps.venv.outputs.cache-hit != 'true'
       shell: bash
     - name: Ensure environment works
