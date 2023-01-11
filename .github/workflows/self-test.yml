@@ -22,6 +22,7 @@ jobs:
     - name: Ensure environment works
       run: |
         echo "VIRTUAL_ENV: ${VIRTUAL_ENV}"
+        echo "PATH: ${PATH}"
         echo "Cache Hit: ${{ steps.venv.outputs.cache-hit }}"
         ls -la ${VIRTUAL_ENV}/lib/*/site-packages/
         python3 ./test/testdata/demo.py
