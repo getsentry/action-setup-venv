@@ -1,14 +1,7 @@
 #!/usr/bin/env python3
 import argparse
-import hashlib
-import io
 import os.path
-import secrets
-import subprocess
 import sys
-import tarfile
-import urllib.request
-from typing import List
 
 VENV_DIR=os.path.abspath(".venv")
 

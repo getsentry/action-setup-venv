@@ -7,6 +7,8 @@ inputs:
   requirement-files:
     description: "Requirement files to install. Can be a glob pattern."
     default: '**/requirements*.txt'
+  venv-dir:
+    default: '.venv'
 
 outputs:
   cache-hit:
@@ -17,30 +19,31 @@ runs:
   using: 'composite'
   steps:
     - uses: actions/setup-python@13ae5bb136fac2878aff31522b9efb785519f984  # v4.3.0
+      id: setup-python
       with:
         python-version: ${{ inputs.python-version }}
         cache: 'pip'
 
-    - name: Setup action variables
-      id: venv
-      shell: bash
-      run: |
-        python3 -uS ${{ github.action_path }}/bin/setup-venv vars \
-        --python-version ${{ inputs.python-version }} \
-        --requirement-files-hash ${{ hashFiles(inputs.requirement-files) }}
+    #- name: Setup action variables
+    #  id: venv-vars
+    #  shell: bash
+    #  run: |
+    #    python3 -uS ${{ github.action_path }}/bin/setup-venv vars \
+    #    --python-version ${{ inputs.python-version }} \
+    #    --requirement-files-hash ${{ hashFiles(inputs.requirement-files) }}
 
     - uses: actions/cache@v3
       id: cache-venv
       with:
-        path: ${{ steps.venv.outputs.venv-dir }}
-        key: ${{ steps.venv.outputs.cache-key }}
+        path: ${{ inputs.venv-dir }}
+        key: setup-venv-${{ runner.os }}-py-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles(inputs.requirement-files) }}
 
-    - run: python3 -m venv ${{ steps.venv.outputs.venv-dir }}
+    - run: python3 -m venv ${{ inputs.venv-dir }}
       if: steps.cache-venv.outputs.cache-hit != 'true'
       shell: bash
 
     - run: |
-        source ${{ steps.venv.outputs.venv-dir }}/bin/activate
+        source ${{ inputs.venv-dir }}/bin/activate
         echo "VIRTUAL_ENV=${VIRTUAL_ENV}" >> $GITHUB_ENV
         echo "${VIRTUAL_ENV}/bin" >> $GITHUB_PATH
       shell: bash
