@@ -12,6 +12,7 @@ inputs:
 outputs:
   cache-hit:
     description: "A boolean value to indicate if a cache was restored"
+    value: ${{ steps.cache-venv.outputs.cache-hit }}
 
 runs:
   using: 'composite'
@@ -42,7 +43,4 @@ runs:
     - run: |
         source ${{ steps.venv.outputs.venv-dir }}/bin/activate
         echo "VIRTUAL_ENV=${VIRTUAL_ENV}" >> $GITHUB_ENV
-      shell: bash
-
-    - run: echo "cache-hit=${{ steps.cache-venv.outputs.cache-hit }}" >> $GITHUB_OUTPUT
       shell: bash
