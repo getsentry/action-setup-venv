@@ -2,7 +2,7 @@ name: 'venv setup'
 description: 'configures venv, python and caches'
 python-version:
   description: "Version range or exact version of Python or PyPy to use, using SemVer's version range syntax."
-  required: true
+  default: 3.8.13
 requirement-files:
   description: "Requirement files to install"
   required: true
@@ -17,7 +17,10 @@ runs:
     - name: Make venv
       id: venv
       shell: bash
-      run: python3 -uS ${{ github.action_path }}/bin/setup-venv --requirement-files ${{ inputs.requirement-files }}
+      run: |
+        python3 -uS ${{ github.action_path }}/bin/setup-venv \
+        --python-version ${{ inputs.python-version }}
+        --requirement-files ${{ inputs.requirement-files }}
 
     # - name: Pip install
 

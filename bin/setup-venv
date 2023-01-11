@@ -10,7 +10,6 @@ import tarfile
 import urllib.request
 from typing import List
 
-PYTHON_VERSION="3.8.13"
 VENV_DIR=os.path.abspath(".venv")
 VENV_BIN_DIR=os.path.join(VENV_DIR, "bin")
 
@@ -19,13 +18,14 @@ def req_files_key():
 
 def main() -> int:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--python-version", required=True)
     parser.add_argument("--requirement-files", nargs='+')
     parser.add_argument("--constraint-files", nargs='*')
     args = parser.parse_args()
 
     print(f"args: {args.required_files} ${args.constraint_files}")
 
-    cache_key = f"{sys.platform}-py-{PYTHON_VERSION}-{req_files_key()}"
+    cache_key = f"{sys.platform}-py-{args.python_version}-{req_files_key()}"
 
     with open(os.environ["GITHUB_OUTPUT"], "a+") as f:
         print(f"cache-key={cache_key}", file=f)
