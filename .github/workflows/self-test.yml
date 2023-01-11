@@ -17,5 +17,5 @@ jobs:
         requirement-files: test/testdata/requirements.txt
     - name: Ensure environment works
       run: |
-        echo "${VIRTUAL_ENV}"
+        echo "VIRTUAL_ENV: ${VIRTUAL_ENV}"
         python3 ./test/testdata/demo.py

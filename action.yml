@@ -37,6 +37,7 @@ runs:
 
     - run: |
         source ${{ steps.venv.outputs.venv-dir }}/bin/activate
+        echo "VIRTUAL_ENV=${VIRTUAL_ENV}" >> $GITHUB_ENV
       shell: bash
 
     - run: pip install -r ${{ inputs.requirement-files }}
