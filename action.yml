@@ -43,4 +43,5 @@ runs:
     - run: |
         source ${{ steps.venv.outputs.venv-dir }}/bin/activate
         echo "VIRTUAL_ENV=${VIRTUAL_ENV}" >> $GITHUB_ENV
+        echo "${VIRTUAL_ENV}/bin" >> $GITHUB_PATH
       shell: bash
