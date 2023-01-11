@@ -14,3 +14,5 @@ jobs:
       uses: ./
       with:
         requirement-files: test/testdata/requirements.txt
+    - name: Run demo
+      run: python3 ./test/testdata/demo.py

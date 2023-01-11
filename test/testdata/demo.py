@@ -1,2 +1,4 @@
 from sentry_sdk import capture_message
-capture_message("Hello World") # Will create an event in Sentry.
+print("Creating event in Sentry.")
+capture_message("Hello World")
+print("Done.")
