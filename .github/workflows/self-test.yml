@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Run local action
+    - name: Test action-setup-venv
       uses: ./
       with:
         python-version: 3.8.13
         requirement-files: test/testdata/requirements.txt
-    - name: Run demo
+    - name: Ensure environment works
       run: python3 ./test/testdata/demo.py

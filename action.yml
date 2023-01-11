@@ -17,17 +17,15 @@ runs:
       with:
         python-version: ${{ inputs.python-version }}
 
-    - name: Make venv
+    - name: Setup action variables
       id: venv
       shell: bash
       run: |
+        echo "::group::Setup action variables"
         python3 -uS ${{ github.action_path }}/bin/setup-venv vars \
         --python-version ${{ inputs.python-version }} \
         --requirement-files-hash ${{ hashFiles(inputs.requirement-files) }}
-
-    - name: TEst
-      shell: bash
-      run: echo "${{ steps.venv.outputs.venv-dir }} + ${{ steps.venv.outputs.cache-key }}"
+        echo "::endgroup::"
 
     - name: Cache venv
       id: cache-venv
@@ -39,10 +37,16 @@ runs:
     - name: Create venv
       if: steps.cache-venv.outputs.cache-hit != 'true'
       shell: bash
-      run: python3 -m venv ${{ steps.venv.outputs.venv-dir }} && source ${{ steps.venv.outputs.venv-dir }}/bin/activate
+      run: |
+        echo "::group::Creating virtual environment"
+        python3 -m venv ${{ steps.venv.outputs.venv-dir }} && source ${{ steps.venv.outputs.venv-dir }}/bin/activate
+        echo "::endgroup::"
 
     - name: Pip install
       shell: bash
-      run: pip install -r ${{ inputs.requirement-files }}
+      run: |
+        echo "::group::Running pip install"
+        pip install -r ${{ inputs.requirement-files }}
+        echo "::endgroup::"
 
     # - name: Cache venv

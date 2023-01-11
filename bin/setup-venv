@@ -17,6 +17,9 @@ def _command_vars(cache_key: str) -> int:
     print(f"cache-key={cache_key}", file=f)
     print(f"venv-dir={VENV_DIR}", file=f)
 
+  print(f"Cache key: {cache_key}")
+  print(f"Venv dir: {VENV_DIR}")
+
   return 0
 
 def main() -> int:
