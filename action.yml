@@ -9,6 +9,10 @@ inputs:
     description: "Requirement files to install. Can be a glob pattern."
     required: true
 
+outputs:
+  cache-hit:
+    description: "A boolean value to indicate if a cache was restored"
+
 runs:
   using: 'composite'
   steps:
