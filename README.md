@@ -3,7 +3,6 @@ action-setup-venv
 
 Sets up python and a virtual environment with caching.
 
-
 ### Usage
 
 ```yaml
