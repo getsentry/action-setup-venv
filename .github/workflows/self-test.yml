@@ -31,3 +31,21 @@ jobs:
     - name: Ensure environment works
       run: python3 ./test/testdata/demo.py
 
+  no-install-self-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    # Run local action
+    - name: Test action-setup-venv
+      id: venv
+      uses: ./
+      with:
+        python-version: 3.8.13
+
+    # Test the venv and external install work
+    - name: Pip install
+      if: steps.venv.outputs.cache-hit != 'true'
+      run: pip install -r test/testdata/requirements.txt
+    - name: Ensure environment works
+      run: python3 ./test/testdata/demo.py
