@@ -3,6 +3,10 @@ action-setup-venv
 
 Sets up python and a virtual environment with caching.
 
+The main benefit of this action over using `setup-python` is that it caches
+the entire venv directory and will skip the `pip install ...` entirely
+when the cache is available.
+
 ### Usage
 
 ```yaml
