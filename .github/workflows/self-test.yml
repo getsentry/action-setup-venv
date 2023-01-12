@@ -10,21 +10,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+
+    # Run local action
     - name: Test action-setup-venv
       id: venv
       uses: ./
       with:
         python-version: 3.8.13
+        install-cmd: pip install -r test/testdata/requirements.txt
+
+    # Print debug vars
     - name: Print variables for debugging
       run: |
         echo "VIRTUAL_ENV: ${VIRTUAL_ENV}"
         echo "PATH: ${PATH}"
         echo "Cache Hit: ${{ steps.venv.outputs.cache-hit }}"
-    - run: pip install -r test/testdata/requirements.txt
-      if: steps.venv.outputs.cache-hit != 'true'
-      shell: bash
-    - name: Print site-packages for debugging
-      run:  ls -la ${VIRTUAL_ENV}/lib/*/site-packages/
-    - name: Ensurenvironment works
+        ls -la ${VIRTUAL_ENV}/lib/*/site-packages/
+
+    # Test the venv and install worked
+    - name: Ensure environment works
       run: python3 ./test/testdata/demo.py
 

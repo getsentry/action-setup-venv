@@ -13,6 +13,5 @@ Sets up python and a virtual environment with caching.
         cache-dependency-path: |
           requirements.txt
           requirements-frozen.txt
-    - run: pip install -r requirements.txt
-      if: steps.venv.outputs.cache-hit != 'true'
+        install-cmd: pip install -r requirements.txt -c requirements-frozen.txt
 ```

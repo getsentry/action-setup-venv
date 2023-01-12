@@ -9,6 +9,8 @@ inputs:
     default: '**/requirements*.txt'
   venv-dir:
     default: '.venv'
+  install-cmd:
+    default: 'Command to install python dependencies.'
 
 outputs:
   cache-hit:
@@ -22,14 +24,12 @@ runs:
       id: setup-python
       with:
         python-version: ${{ inputs.python-version }}
-        cache: 'pip'
-        cache-dependency-path: ${{ inputs.cache-dependency-path }}
 
     - uses: actions/cache@v3
       id: cache-venv
       with:
         path: ${{ inputs.venv-dir }}
-        key: setup-venv-${{ runner.os }}-py-${{ steps.setup-python.outputs.python-version }}-${{ steps.setup-python.outputs.python-path }}-${{ hashFiles(inputs.cache-dependency-path) }}
+        key: setup-venv-${{ runner.os }}-py-${{ steps.setup-python.outputs.python-version }}-${{ steps.setup-python.outputs.python-path }}-${{ hashFiles(inputs.cache-dependency-path) }}-${{ inputs.install-cmd }}
 
     - run: python3 -m venv ${{ inputs.venv-dir }}
       if: steps.cache-venv.outputs.cache-hit != 'true'
@@ -39,4 +39,8 @@ runs:
         source ${{ inputs.venv-dir }}/bin/activate
         echo "VIRTUAL_ENV=${VIRTUAL_ENV}" >> $GITHUB_ENV
         echo "${VIRTUAL_ENV}/bin" >> $GITHUB_PATH
+      shell: bash
+
+    - run: ${{ inputs.install-cmd }}
+      if: steps.cache-venv.outputs.cache-hit != 'true'
       shell: bash
