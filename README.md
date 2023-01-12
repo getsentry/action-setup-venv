@@ -10,7 +10,7 @@ when the cache is available.
 ### Usage
 
 ```yaml
-    - uses: getsentry/action-setup-venv@v1.0.0
+    - uses: getsentry/action-setup-venv@v1.0.4
       id: venv
       with:
         python-version: 3.10.7
