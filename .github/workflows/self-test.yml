@@ -15,13 +15,12 @@ jobs:
       uses: ./
       with:
         python-version: 3.8.13
+        install-cmd: pip install -r test/testdata/requirements.txt
     - name: Print variables for debugging
       run: |
         echo "VIRTUAL_ENV: ${VIRTUAL_ENV}"
         echo "PATH: ${PATH}"
         echo "Cache Hit: ${{ steps.venv.outputs.cache-hit }}"
-    - run: pip install -r test/testdata/requirements.txt
-      if: steps.venv.outputs.cache-hit != 'true'
       shell: bash
     - name: Print site-packages for debugging
       run:  ls -la ${VIRTUAL_ENV}/lib/*/site-packages/
