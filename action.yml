@@ -10,7 +10,7 @@ inputs:
   venv-dir:
     default: '.venv'
   install-cmd:
-    default: 'Command to install python dependencies.'
+    description: 'Command to install python dependencies.'
 
 outputs:
   cache-hit:
@@ -42,5 +42,5 @@ runs:
       shell: bash
 
     - run: ${{ inputs.install-cmd }}
-      if: steps.cache-venv.outputs.cache-hit != 'true'
+      if: "${{ inputs.install-cmd }} != '' && ${{ steps.cache-venv.outputs.cache-hit }} != 'true'"
       shell: bash
