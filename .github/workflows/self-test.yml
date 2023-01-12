@@ -28,6 +28,6 @@ jobs:
         ls -la ${VIRTUAL_ENV}/lib/*/site-packages/
 
     # Test the venv and install worked
-    - name: Ensurenvironment works
+    - name: Ensure environment works
       run: python3 ./test/testdata/demo.py
 
