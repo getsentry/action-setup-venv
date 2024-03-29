@@ -25,6 +25,9 @@ runs:
       with:
         python-version: ${{ inputs.python-version }}
 
+    - run: echo '::remove-matcher owner=python::'
+      shell: bash
+
     - uses: actions/cache@13aacd865c20de90d75de3b17ebe84f7a17d57d2  # v4.0.0
       id: cache-venv
       with:
