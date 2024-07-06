@@ -39,7 +39,7 @@ runs:
       shell: bash
 
     - run: |
-        source ${{ inputs.venv-dir }}/bin/activate
+        source ${{ inputs.venv-dir }}/${{ runner.os == 'Windows' && 'Scripts' || 'bin' }}/activate
         echo "VIRTUAL_ENV=${VIRTUAL_ENV}" >> $GITHUB_ENV
         echo "${VIRTUAL_ENV}/bin" >> $GITHUB_PATH
       shell: bash
