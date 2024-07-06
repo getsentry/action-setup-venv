@@ -7,7 +7,12 @@ on:
 
 jobs:
   self-test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ubuntu-latest, macos-latest, windows-latest]
+
     steps:
     - uses: actions/checkout@v3
 
@@ -16,20 +21,21 @@ jobs:
       id: venv
       uses: ./
       with:
-        python-version: 3.8.13
+        python-version: 3.8
         install-cmd: pip install -r test/testdata/requirements.txt
 
     # Print debug vars
     - name: Print variables for debugging
+      shell: bash
       run: |
         echo "VIRTUAL_ENV: ${VIRTUAL_ENV}"
         echo "PATH: ${PATH}"
         echo "Cache Hit: ${{ steps.venv.outputs.cache-hit }}"
-        ls -la ${VIRTUAL_ENV}/lib/*/site-packages/
+        ls -la ${VIRTUAL_ENV}/${{ runner.os == 'Windows' && 'Lib' || 'lib/*' }}/site-packages
 
     # Test the venv and install worked
     - name: Ensure environment works
-      run: python3 ./test/testdata/demo.py
+      run: python ./test/testdata/demo.py
 
   no-install-self-test:
     runs-on: ubuntu-latest
@@ -41,11 +47,11 @@ jobs:
       id: venv
       uses: ./
       with:
-        python-version: 3.8.13
+        python-version: 3.8
 
     # Test the venv and external install work
     - name: Pip install
       if: steps.venv.outputs.cache-hit != 'true'
       run: pip install -r test/testdata/requirements.txt
     - name: Ensure environment works
-      run: python3 ./test/testdata/demo.py
+      run: python ./test/testdata/demo.py

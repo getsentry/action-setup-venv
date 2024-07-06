@@ -34,14 +34,15 @@ runs:
         path: ${{ inputs.venv-dir }}
         key: setup-venv-${{ runner.os }}-py-${{ steps.setup-python.outputs.python-version }}-${{ steps.setup-python.outputs.python-path }}-${{ hashFiles(inputs.cache-dependency-path) }}-${{ inputs.install-cmd }}
 
-    - run: python3 -m venv ${{ inputs.venv-dir }}
+    - run: python -m venv ${{ inputs.venv-dir }}
       if: steps.cache-venv.outputs.cache-hit != 'true'
       shell: bash
 
     - run: |
-        source ${{ inputs.venv-dir }}/bin/activate
+        SCRIPT_DIR="${{ runner.os == 'Windows' && 'Scripts' || 'bin' }}"
+        source ${{ inputs.venv-dir }}/${SCRIPT_DIR}/activate
         echo "VIRTUAL_ENV=${VIRTUAL_ENV}" >> $GITHUB_ENV
-        echo "${VIRTUAL_ENV}/bin" >> $GITHUB_PATH
+        echo "${VIRTUAL_ENV}/${SCRIPT_DIR}" >> $GITHUB_PATH
       shell: bash
 
     - run: ${{ inputs.install-cmd }}
