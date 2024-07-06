@@ -16,7 +16,7 @@ jobs:
       id: venv
       uses: ./
       with:
-        python-version: 3.8.13
+        python-version: 3.8
         install-cmd: pip install -r test/testdata/requirements.txt
 
     # Print debug vars
@@ -41,7 +41,7 @@ jobs:
       id: venv
       uses: ./
       with:
-        python-version: 3.8.13
+        python-version: 3.8
 
     # Test the venv and external install work
     - name: Pip install
