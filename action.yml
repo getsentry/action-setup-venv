@@ -1,16 +1,22 @@
-name: 'venv setup'
-description: 'configures venv, python and caches'
+name: "venv setup"
+description: "configures venv, python and caches"
 
 inputs:
   python-version:
-    description: "Version range or exact version of Python or PyPy to use, using SemVer's version range syntax."
+    description:
+      "Version range or exact version of Python or PyPy to use, using SemVer's
+      version range syntax."
   cache-dependency-path:
     description: "Requirement files to install. Can be a glob pattern."
-    default: '**/requirements*.txt'
+    default: "**/requirements*.txt"
   venv-dir:
-    default: '.venv'
+    description: "output path"
+    default: ".venv"
   install-cmd:
-    description: 'Command to install python dependencies.'
+    description: "Command to install python dependencies."
+  ssh-private-key:
+    description: "Private SSH key to use for git clone"
+    default: ""
 
 outputs:
   cache-hit:
@@ -18,9 +24,15 @@ outputs:
     value: ${{ steps.cache-venv.outputs.cache-hit }}
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
-    - uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c  # v5.0.0
+    - name: Set up SSH agent
+      uses: webfactory/ssh-agent@v0.8.0
+      if: inputs.ssh-private-key != ''
+      with:
+        ssh-private-key: ${{ inputs.ssh-private-key }}
+
+    - uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5.0.0
       id: setup-python
       with:
         python-version: ${{ inputs.python-version }}
@@ -28,11 +40,15 @@ runs:
     - run: echo '::remove-matcher owner=python::'
       shell: bash
 
-    - uses: actions/cache@13aacd865c20de90d75de3b17ebe84f7a17d57d2  # v4.0.0
+    - uses: actions/cache@13aacd865c20de90d75de3b17ebe84f7a17d57d2 # v4.0.0
       id: cache-venv
       with:
         path: ${{ inputs.venv-dir }}
-        key: setup-venv-${{ runner.os }}-py-${{ steps.setup-python.outputs.python-version }}-${{ steps.setup-python.outputs.python-path }}-${{ hashFiles(inputs.cache-dependency-path) }}-${{ inputs.install-cmd }}
+        key:
+          setup-venv-${{ runner.os }}-py-${{
+          steps.setup-python.outputs.python-version }}-${{
+          steps.setup-python.outputs.python-path }}-${{
+          hashFiles(inputs.cache-dependency-path) }}-${{ inputs.install-cmd }}
 
     - run: python3 -m venv ${{ inputs.venv-dir }}
       if: steps.cache-venv.outputs.cache-hit != 'true'
@@ -45,5 +61,6 @@ runs:
       shell: bash
 
     - run: ${{ inputs.install-cmd }}
-      if: inputs.install-cmd != '' && steps.cache-venv.outputs.cache-hit != 'true'
+      if:
+        inputs.install-cmd != '' && steps.cache-venv.outputs.cache-hit != 'true'
       shell: bash
