@@ -4,6 +4,9 @@ description: 'configures venv, python and caches'
 inputs:
   python-version:
     description: "Version range or exact version of Python or PyPy to use, using SemVer's version range syntax."
+  uv-version:
+    description: "Version of uv to install."
+    default: 'latest'
   cache-dependency-path:
     description: "Requirement files to install. Can be a glob pattern."
     default: '**/requirements*.txt'
@@ -20,6 +23,15 @@ outputs:
 runs:
   using: 'composite'
   steps:
+    uses: astral-sh/setup-uv@v6
+    with:
+      version: ${{ inputs.uv-version }}
+      # we just cache the venv-dir directly
+      enable-cache: false
+
+    # we prefer to use github-managed pythons rather than uv pythons:
+    # it's closer to production and there's been issues trying to get uv pythons
+    # to work with pyo3 (https://github.com/getsentry/streams/pull/158)
     - uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c  # v5.0.0
       id: setup-python
       with:
