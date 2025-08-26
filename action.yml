@@ -23,13 +23,13 @@ runs:
   steps:
     - uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c  # v5.0.0
       if: ${{ inputs.python-version != '' }}
-      id: setup-python
+      id: setup-python-version
       with:
         python-version: ${{ inputs.python-version }}
 
     - uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c  # v5.0.0
       if: ${{ inputs.python-version == '' }}
-      id: setup-python
+      id: setup-python-version-file
       with:
         python-version-file: ".python-version"
 
