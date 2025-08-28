@@ -21,14 +21,11 @@ outputs:
 runs:
   using: 'composite'
   steps:
-    - if: ${{ inputs.python-version == '' && hashFiles('.python-version') != '' }}
-      run: |
-        echo "SETUP_VENV_PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
-
     - uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c  # v5.0.0
       id: setup-python
       with:
-        python-version: ${{ env.SETUP_VENV_PYTHON_VERSION || inputs.python-version }}
+        python-version: ${{ inputs.python-version }}
+        python-version-file: ${{ hashFiles('.python-version') == '' && '' || '.python-version' }}
 
     - run: echo '::remove-matcher owner=python::'
       shell: bash
