@@ -44,12 +44,7 @@ jobs:
         python ./test/testdata/demo.py
 
   self-test-python-version-file:
-    runs-on: ${{ matrix.platform }}
-    strategy:
-      fail-fast: false
-      matrix:
-        platform: [ubuntu-latest]
-
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
 
@@ -80,21 +75,23 @@ jobs:
         python -Sc 'import sys; assert sys.version_info[:3] == (3, 11, 6), sys.version_info'
         python ./test/testdata/demo.py
 
-#   no-install-self-test:
-#     runs-on: ubuntu-latest
-#     steps:
-#     - uses: actions/checkout@v3
-#
-#     # Run local action
-#     - name: Test action-setup-venv
-#       id: venv
-#       uses: ./
-#       with:
-#         python-version: 3.11.6
-#
-#     # Test the venv and external install work
-#     - name: Pip install
-#       if: steps.venv.outputs.cache-hit != 'true'
-#       run: pip install -r test/testdata/requirements.txt
-#     - name: Ensure environment works
-#       run: python ./test/testdata/demo.py
+  no-install-self-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    # Run local action
+    - name: Test action-setup-venv
+      id: venv
+      uses: ./
+      with:
+        python-version: 3.11.6
+
+    # Test the venv and external install work
+    - name: Pip install
+      if: steps.venv.outputs.cache-hit != 'true'
+      run: pip install -r test/testdata/requirements.txt
+    - name: Ensure environment works
+      run: |
+        python -Sc 'import sys; assert sys.version_info[:3] == (3, 11, 6), sys.version_info'
+        python ./test/testdata/demo.py
