@@ -3,7 +3,8 @@ description: 'configures venv, python and caches'
 
 inputs:
   python-version:
-    description: "Version range or exact version of Python or PyPy to use, using SemVer's version range syntax."
+    description: "Version range or exact version of Python or PyPy to use, using SemVer's version range syntax. If not set, the version in .python-version file will be used."
+    default: ''
   cache-dependency-path:
     description: "Requirement files to install. Can be a glob pattern."
     default: '**/requirements*.txt'
@@ -24,6 +25,7 @@ runs:
       id: setup-python
       with:
         python-version: ${{ inputs.python-version }}
+        python-version-file: ${{ hashFiles('.python-version') == '' && '' || '.python-version' }}
 
     - run: echo '::remove-matcher owner=python::'
       shell: bash
