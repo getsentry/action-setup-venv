@@ -35,7 +35,7 @@ runs:
     - uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57  # v4.2.0
       id: cache-venv
       with:
-        path: ${{ inputs.venv-dir }}
+        path: ${{ inputs.working-directory }}/${{ inputs.venv-dir }}
         key: setup-venv-${{ runner.os }}-py-${{ steps.setup-python.outputs.python-version }}-${{ steps.setup-python.outputs.python-path }}-${{ hashFiles(inputs.cache-dependency-path) }}-${{ inputs.install-cmd }}
 
     - run: python -m venv ${{ inputs.venv-dir }}
