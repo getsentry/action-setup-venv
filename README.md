@@ -17,7 +17,7 @@ uv:
         # we just cache the venv-dir directly in action-setup-venv
         enable-cache: false
 
-    - uses: getsentry/action-setup-venv@v3.0.0
+    - uses: getsentry/action-setup-venv@v3.1.0
       with:
         cache-dependency-path: uv.lock
         install-cmd: uv sync --frozen --active
@@ -25,7 +25,7 @@ uv:
 
 pip:
 ```yaml
-    - uses: getsentry/action-setup-venv@v3.0.0
+    - uses: getsentry/action-setup-venv@v3.1.0
       id: venv
       with:
         # starting from action-setup-venv@v3.0.0, if python-version isn't specified,
