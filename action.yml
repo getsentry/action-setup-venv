@@ -12,7 +12,9 @@ inputs:
     default: '.venv'
   install-cmd:
     description: 'Command to install python dependencies.'
-
+  working-directory:
+    description: 'The working directory to run the action in.'
+    default: ${{ github.workspace }}
 outputs:
   cache-hit:
     description: "A boolean value to indicate if a cache was restored"
@@ -39,6 +41,7 @@ runs:
     - run: python -m venv ${{ inputs.venv-dir }}
       if: steps.cache-venv.outputs.cache-hit != 'true'
       shell: bash
+      working-directory: ${{ inputs.working-directory }}
 
     - run: |
         SCRIPT_DIR="${{ runner.os == 'Windows' && 'Scripts' || 'bin' }}"
@@ -46,7 +49,9 @@ runs:
         echo "VIRTUAL_ENV=${VIRTUAL_ENV}" >> $GITHUB_ENV
         echo "${VIRTUAL_ENV}/${SCRIPT_DIR}" >> $GITHUB_PATH
       shell: bash
+      working-directory: ${{ inputs.working-directory }}
 
     - run: ${{ inputs.install-cmd }}
       if: inputs.install-cmd != '' && steps.cache-venv.outputs.cache-hit != 'true'
       shell: bash
+      working-directory: ${{ inputs.working-directory }}
