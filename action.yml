@@ -27,7 +27,7 @@ runs:
       id: setup-python
       with:
         python-version: ${{ inputs.python-version }}
-        python-version-file: ${{ hashFiles(inputs.working-directory + '/.python-version') == '' && '' || inputs.working-directory + '/.python-version' }}
+        python-version-file: ${{ hashFiles(format('{0}/.python-version', inputs.working-directory)) == '' && '' || format('{0}/.python-version', inputs.working-directory) }}
 
     - run: echo '::remove-matcher owner=python::'
       shell: bash
