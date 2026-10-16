@@ -6,9 +6,10 @@ inputs:
     description: "Version range or exact version of Python or PyPy to use, using SemVer's version range syntax. If not set, the version in .python-version file will be used."
     default: ''
   cache-dependency-path:
-    description: "Requirement files to install. Can be a glob pattern."
+    description: "Files hashed into the cache key. Can be a glob pattern."
     default: '**/requirements*.txt'
   venv-dir:
+    description: 'Venv directory, relative to working-directory.'
     default: '.venv'
   install-cmd:
     description: 'Command to install python dependencies.'
