@@ -39,20 +39,27 @@ runs:
         path: ${{ inputs.working-directory }}/${{ inputs.venv-dir }}
         key: setup-venv-${{ runner.os }}-py-${{ steps.setup-python.outputs.python-version }}-${{ steps.setup-python.outputs.python-path }}-${{ hashFiles(inputs.cache-dependency-path) }}-${{ inputs.install-cmd }}
 
-    - run: python -m venv ${{ inputs.venv-dir }}
+    - run: python -m venv "$VENV_DIR"
       if: steps.cache-venv.outputs.cache-hit != 'true'
       shell: bash
       working-directory: ${{ inputs.working-directory }}
+      env:
+        VENV_DIR: ${{ inputs.venv-dir }}
 
     - run: |
-        SCRIPT_DIR="${{ runner.os == 'Windows' && 'Scripts' || 'bin' }}"
-        source ${{ inputs.venv-dir }}/${SCRIPT_DIR}/activate
+        SCRIPT_DIR="${RUNNER_OS_VENV_SCRIPT_DIR}"
+        source "$VENV_DIR"/${SCRIPT_DIR}/activate
         echo "VIRTUAL_ENV=${VIRTUAL_ENV}" >> $GITHUB_ENV
         echo "${VIRTUAL_ENV}/${SCRIPT_DIR}" >> $GITHUB_PATH
       shell: bash
       working-directory: ${{ inputs.working-directory }}
+      env:
+        RUNNER_OS_VENV_SCRIPT_DIR: ${{ runner.os == 'Windows' && 'Scripts' || 'bin' }}
+        VENV_DIR: ${{ inputs.venv-dir }}
 
-    - run: ${{ inputs.install-cmd }}
+    - run: "$INSTALL_CMD"
       if: inputs.install-cmd != '' && steps.cache-venv.outputs.cache-hit != 'true'
       shell: bash
       working-directory: ${{ inputs.working-directory }}
+      env:
+        INSTALL_CMD: ${{ inputs.install-cmd }}
